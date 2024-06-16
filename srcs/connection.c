@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/16 15:46:01 by cpapot            #+#    #+#             */
-/*   Updated: 2024/06/16 16:44:28 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/06/16 20:30:23 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,4 +30,52 @@ char	*resolve_host(const char *host, t_memlist *data)
 	strcpy(result, inet_ntoa(addr->sin_addr));
 	freeaddrinfo(res);
 	return result;
+}
+
+unsigned short checksum(void *b, int len)
+{
+	unsigned short *buf = b;
+	unsigned int sum = 0;
+	unsigned short result;
+
+	for (sum = 0; len > 1; len -= 2)
+		sum += *buf++;
+	if (len == 1)
+		sum += *(unsigned char *)buf;
+	sum = (sum >> 16) + (sum & 0xFFFF);
+	sum += (sum >> 16);
+	result = ~sum;
+	return result;
+}
+
+void	update_data(t_pingdata *data, t_network_data *net_data)
+{
+	ft_bzero(&net_data->packet, sizeof(net_data->packet));
+	net_data->icmp = (struct icmphdr *)net_data->packet;
+	net_data->icmp->type = ICMP_ECHO;
+	net_data->icmp->code = 0;
+	net_data->icmp->un.echo.id = htons(getpid());
+	net_data->icmp->un.echo.sequence = htons(data->sequence++);
+	net_data->icmp->checksum = 0;
+	net_data->icmp->checksum = checksum(net_data->packet, sizeof(struct icmphdr));
+}
+
+t_network_data	*setup_connection(t_pingdata *data)
+{
+	t_network_data	*net_data;
+
+	net_data = stock_malloc(sizeof(t_network_data), &data->allocatedData);
+	net_data->socket = socket(AF_INET, SOCK_RAW, IPPROTO_ICMP);
+	if (net_data->socket < 0)
+		return sprintf(data->error, "sockect, %s", strerror(errno)), NULL;
+
+	net_data->icmp = (struct icmphdr *)net_data->packet;
+	net_data->addr_len = sizeof(net_data->r_addr);
+
+	ft_bzero(&net_data->addr, sizeof(net_data->addr));
+	net_data->addr.sin_family = AF_INET;
+	net_data->addr.sin_addr.s_addr = inet_addr(data->targetIP);
+
+	data->sequence = 0;
+	return net_data;
 }

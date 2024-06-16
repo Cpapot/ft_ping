@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 15:34:29 by cpapot            #+#    #+#             */
-/*   Updated: 2024/06/16 17:20:53 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/06/16 20:21:35 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,12 @@ typedef struct s_pingdata
 {
 	char			*targetIP;
 	bool			verbose;
+	int				sequence;
 	t_memlist		*allocatedData;
 	char			error[ERROR_BUFFSIZE];
 } t_pingdata;
 
-void	ping_printerror(bool printhelp, t_pingdata *data);
+void	ping_printerror(bool printhelp, t_pingdata *data, int socket);
 int		parseParameter(int argc, char **argv, t_pingdata *data);
 
 
