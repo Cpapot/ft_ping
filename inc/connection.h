@@ -1,23 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   connection.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/14 15:34:32 by cpapot            #+#    #+#             */
-/*   Updated: 2024/06/16 16:32:31 by cpapot           ###   ########.fr       */
+/*   Created: 2024/06/16 15:46:06 by cpapot            #+#    #+#             */
+/*   Updated: 2024/06/16 16:24:57 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parsing.h"
+#ifndef CONNECTION_H
+# define CONNECTION_H
 
-int main(int argc, char **argv)
-{
-	t_pingdata	data;
+# include "ft_ping.h"
 
-	data.targetIP = -1;
 
-	parseParameter(argc, argv, &data);
+# include "../libft/includes/libft.h"
+# include <unistd.h>
+# include <stdio.h>
+# include <stdlib.h>
+# include <netdb.h>
+# include <arpa/inet.h>
+# include <sys/types.h>
+# include <sys/socket.h>
+# include <string.h>
 
-}
+#endif

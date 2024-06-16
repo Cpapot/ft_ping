@@ -6,12 +6,12 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 15:34:29 by cpapot            #+#    #+#             */
-/*   Updated: 2024/06/14 16:41:09 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/06/16 15:46:24 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINIRT_H
-# define MINIRT_H
+#ifndef FTPING_H
+# define FTPING_H
 
 # include "../libft/includes/libft.h"
 # include <unistd.h>
@@ -19,7 +19,7 @@
 
 typedef struct s_pingdata
 {
-	int		targetIP;
+	char	*targetIP;
 	bool	verbose;
 
 } t_pingdata;

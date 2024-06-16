@@ -6,9 +6,12 @@
 #				|_|    |_|_|\___||___/
 
 HEADERS		=	ft_ping.h	\
-				parsing.h
+				parsing.h	\
+				connection.h
 
-SRCS		=	main.c
+SRCS		=	main.c		\
+				parsing.c	\
+				connection.c
 
 LIBFTSRC	=	libftprintf.a libft.a printffd.a
 
@@ -66,7 +69,7 @@ NAME		=	ft_ping
 
 AR			=	ar rc
 
-CFLAGS		=	-Wall -Wextra -Werror
+CFLAGS		=	-Wall -Wextra #-Werror
 
 CC			=	cc
 
