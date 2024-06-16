@@ -1,34 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_ping.h                                          :+:      :+:    :+:   */
+/*   error.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/14 15:34:29 by cpapot            #+#    #+#             */
-/*   Updated: 2024/06/16 17:20:53 by cpapot           ###   ########.fr       */
+/*   Created: 2024/06/16 16:53:01 by cpapot            #+#    #+#             */
+/*   Updated: 2024/06/16 17:22:01 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FTPING_H
-# define FTPING_H
+#ifndef PING_ERROR_H
+# define PING_ERROR_H
 
-# include "../libft/includes/libft.h"
-# include <unistd.h>
-# include <stdio.h>
+# define INFO_HELP		"Try 'ft_ping -?' for more information.\n"
 
-# define ERROR_BUFFSIZE		1024
-
-typedef struct s_pingdata
-{
-	char			*targetIP;
-	bool			verbose;
-	t_memlist		*allocatedData;
-	char			error[ERROR_BUFFSIZE];
-} t_pingdata;
-
-void	ping_printerror(bool printhelp, t_pingdata *data);
-int		parseParameter(int argc, char **argv, t_pingdata *data);
-
+# include "ft_ping.h"
 
 #endif

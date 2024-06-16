@@ -5,13 +5,18 @@
 #				| |    | | |  __/\__ \.
 #				|_|    |_|_|\___||___/
 
-HEADERS		=	ft_ping.h	\
-				parsing.h	\
-				connection.h
+HEADERS		=	ft_ping.h		\
+				parsing.h		\
+				connection.h	\
+				error.h			\
+				help.h
 
-SRCS		=	main.c		\
-				parsing.c	\
-				connection.c
+SRCS		=	main.c			\
+				parsing.c		\
+				parsing_utils.c	\
+				connection.c	\
+				error.c			\
+				help.c
 
 LIBFTSRC	=	libftprintf.a libft.a printffd.a
 
@@ -69,7 +74,7 @@ NAME		=	ft_ping
 
 AR			=	ar rc
 
-CFLAGS		=	-Wall -Wextra #-Werror
+CFLAGS		=	-Wall -Wextra -Werror
 
 CC			=	cc
 

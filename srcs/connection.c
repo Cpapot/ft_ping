@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/16 15:46:01 by cpapot            #+#    #+#             */
-/*   Updated: 2024/06/16 16:29:51 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/06/16 16:44:28 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,8 @@ char	*resolve_host(const char *host, t_memlist *data)
 	hints.ai_socktype = SOCK_STREAM;
 
 	if (getaddrinfo(host, NULL, &hints, &res) != 0)
-	{
-		perror("resolve_host: ");
-		exit (1);
-	}
+		return NULL;
+
 	addr = (struct sockaddr_in *)res->ai_addr;
 	result = stock_malloc(sizeof(char) * strlen(inet_ntoa(addr->sin_addr)), &data);
 	strcpy(result, inet_ntoa(addr->sin_addr));
