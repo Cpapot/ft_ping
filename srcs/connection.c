@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/16 15:46:01 by cpapot            #+#    #+#             */
-/*   Updated: 2024/06/17 15:25:37 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/06/17 17:35:54 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,8 @@ t_network_data	*setup_connection(t_pingdata *data)
 	t_network_data	*net_data;
 
 	net_data = stock_malloc(sizeof(t_network_data), &data->allocatedData);
+	if (net_data == NULL)
+		return sprintf(data->error, "malloc, %s", strerror(errno)), NULL;
 	net_data->socket = socket(AF_INET, SOCK_RAW, IPPROTO_ICMP);
 	if (net_data->socket < 0)
 		return sprintf(data->error, "sockect, %s", strerror(errno)), NULL;

@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 14:23:43 by cpapot            #+#    #+#             */
-/*   Updated: 2024/06/17 17:19:30 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/06/17 17:57:44 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,18 +28,18 @@ enum	e_time_info
 
 typedef struct s_variance
 {
-	int			n;
-	long long	sum;
-	long long	sum_sqr;
+	int				n;
+	long double		sum;
+	long double		sum_sqr;
 } t_variance;
 
 typedef struct s_time_data
 {
-	long				actual_delay;
-	long				min_delay;
-	long				max_delay;
-	t_variance			variance_data;
-	long long			total_delay;
+	long double		actual_delay;
+	long double		min_delay;
+	long double		max_delay;
+	t_variance		variance_data;
+	long double		total_delay;
 } t_time_data;
 
 void	init_variance(t_variance *data);

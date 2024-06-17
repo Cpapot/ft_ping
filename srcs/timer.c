@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 14:26:07 by cpapot            #+#    #+#             */
-/*   Updated: 2024/06/17 17:22:02 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/06/17 18:03:10 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int		setup_timer(t_pingdata *data)
 	{
 		time_data = stock_malloc(sizeof(t_time_data), &data->allocatedData);
 		if (time_data == NULL)
-			return 1;
+			return sprintf(data->error, "malloc, broken malloc"), 1;
 		time_data->max_delay = -1;
 		time_data->min_delay = -1;
 		time_data->total_delay = 0;
@@ -34,15 +34,15 @@ void	init_timer(void)
 	struct timeval	timer;
 
 	gettimeofday(&timer, NULL);
-	time_data->actual_delay = (long)(timer.tv_usec * 0.001 + timer.tv_sec * 1000);
+	time_data->actual_delay = (long double)(timer.tv_usec * 0.001 + timer.tv_sec * 1000);
 }
 
-long	stop_timer(void)
+long double	stop_timer(void)
 {
 	struct timeval	timer;
 
 	gettimeofday(&timer, NULL);
-	time_data->actual_delay = (long)(timer.tv_usec * 0.001 + timer.tv_sec * 1000) - time_data->actual_delay;
+	time_data->actual_delay = (long double)((timer.tv_usec * 0.001 + timer.tv_sec * 1000)) - time_data->actual_delay;
 	if (time_data->max_delay == -1 || time_data->max_delay < time_data->actual_delay)
 		time_data->max_delay = time_data->actual_delay;
 	if (time_data->min_delay == -1 || time_data->min_delay > time_data->actual_delay)
@@ -52,9 +52,9 @@ long	stop_timer(void)
 	return time_data->actual_delay;
 }
 
-long	*get_timer_result(t_pingdata *data)
+long double	*get_timer_result(t_pingdata *data)
 {
-	long	*timer_result = stock_malloc(sizeof(long) * 4, &data->allocatedData);
+	long double	*timer_result = stock_malloc(sizeof(long double) * 4, &data->allocatedData);
 	if (timer_result == NULL)
 		return NULL;
 	timer_result[MIN_DEL] = time_data->min_delay;
