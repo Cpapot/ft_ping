@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/16 15:46:01 by cpapot            #+#    #+#             */
-/*   Updated: 2024/06/17 17:35:54 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/06/17 18:18:39 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,8 @@ t_network_data	*setup_connection(t_pingdata *data)
 	setsockopt(net_data->socket, SOL_SOCKET, SO_RCVTIMEO, (const char *)&net_data->tv_out, sizeof(net_data->tv_out));
 
 	data->sequence = 0;
+	data->p_received = 0;
+	data->p_transmitted = 0;
 	return net_data;
 }
 

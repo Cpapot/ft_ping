@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 17:07:20 by cpapot            #+#    #+#             */
-/*   Updated: 2024/06/17 17:22:34 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/06/17 18:37:50 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,17 +19,17 @@ void	init_variance(t_variance *data)
 	data->sum_sqr = 0.0;
 }
 
-void	add_variance_sample(t_variance *data, long sample)
+void	add_variance_sample(t_variance *data, long double sample)
 {
 	data->n++;
 	data->sum += sample;
 	data->sum_sqr += sample * sample;
 }
 
-long	compute_stddev(t_variance *data)
+long double	compute_stddev(t_variance *data)
 {
 	if (data->n == 0)
 		return 0;
-	long avg = data->sum / data->n;
+	long double avg = data->sum / data->n;
 	return sqrtl((data->sum_sqr / data->n) - (avg * avg));
 }

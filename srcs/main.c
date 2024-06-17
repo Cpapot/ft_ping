@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 15:34:32 by cpapot            #+#    #+#             */
-/*   Updated: 2024/06/17 18:12:14 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/06/17 18:40:36 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,16 @@ void	main_loop(t_pingdata *data, t_network_data *net_data)
 		close(net_data->socket);
 		exit(1);
 	}
+	data->p_transmitted++;
 
+	//refaire les secus pour gerer le paquet loss (ne pas exit)
 	if (recvfrom(net_data->socket, net_data->packet, sizeof(net_data->packet), 0, (struct sockaddr *)&(net_data->r_addr), &(net_data->addr_len)) <= 0) {
-		perror("recvfrom");
-		close(net_data->socket);
-		exit(1);
+		//perror("recvfrom");
+		//close(net_data->socket);
+		//exit(1);
 	}
+	else
+		data->p_received++;
 
 	long double	delay = stop_timer();
 	struct iphdr *ip_hdr = (struct iphdr *)net_data->packet;
@@ -41,6 +45,7 @@ void	main_loop(t_pingdata *data, t_network_data *net_data)
 
 }
 
+//TODO GERER DIVIDE PAR 0 SI AUCUNE REQUETE NE SONT PASSEE
 int main(int argc, char **argv)
 {
 	t_pingdata		data;
@@ -62,7 +67,16 @@ int main(int argc, char **argv)
 
 	ft_printf("PING %s (%s): 56 data bytes\n", data.address, data.targetIP);
 	while (42)
+	{
 		main_loop(&data, net_data);
+		if (data.sequence == 10)
+			break;
+	}
+	long double	result[4];
+	get_timer_result(&data, result);
+	printf("--- %s ft_ping statistics ---\n", data.address);
+	printf("%d packets transmitted, %d packets received, %d%% packet loss\n", data.p_transmitted, data.p_received, (100 - ((100 * data.p_received) / data.p_transmitted)));
+	printf("round-trip min/avg/max/stddev = %.3Lf/%.3Lf/%.3Lf/%.3Lf ms\n", result[0], result[2], result[1], result[3]);
 	close(net_data->socket);
 	stock_free(&data.allocatedData);
 	return 0;

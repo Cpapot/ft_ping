@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 14:23:43 by cpapot            #+#    #+#             */
-/*   Updated: 2024/06/17 17:57:44 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/06/17 18:38:04 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,9 +42,9 @@ typedef struct s_time_data
 	long double		total_delay;
 } t_time_data;
 
-void	init_variance(t_variance *data);
-void	add_variance_sample(t_variance *data, long sample);
-long	compute_stddev(t_variance *data);
+void		init_variance(t_variance *data);
+void		add_variance_sample(t_variance *data, long double sample);
+long double	compute_stddev(t_variance *data);
 
 
 #endif

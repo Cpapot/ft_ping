@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/17 14:26:07 by cpapot            #+#    #+#             */
-/*   Updated: 2024/06/17 18:03:10 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/06/17 18:26:14 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,14 +52,10 @@ long double	stop_timer(void)
 	return time_data->actual_delay;
 }
 
-long double	*get_timer_result(t_pingdata *data)
+void	get_timer_result(t_pingdata *data, long double *timer_result)
 {
-	long double	*timer_result = stock_malloc(sizeof(long double) * 4, &data->allocatedData);
-	if (timer_result == NULL)
-		return NULL;
 	timer_result[MIN_DEL] = time_data->min_delay;
 	timer_result[MAX_DEL] = time_data->max_delay;
 	timer_result[AVG_DEL] = time_data->total_delay / data->p_received;
 	timer_result[DEV_DEL] = compute_stddev(&time_data->variance_data);
-	return timer_result;
 }

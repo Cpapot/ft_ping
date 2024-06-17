@@ -77,7 +77,7 @@ NAME		=	ft_ping
 
 AR			=	ar rc
 
-CFLAGS		=	-Wall -Wextra -Werror
+CFLAGS		=	-Wall -Wextra -Werror -g
 
 CC			=	cc
 
