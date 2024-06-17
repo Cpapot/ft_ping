@@ -6,13 +6,13 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 15:56:18 by cpapot            #+#    #+#             */
-/*   Updated: 2024/06/17 14:20:57 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/06/17 22:25:19 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parsing.h"
 
-char	*resolve_host(const char *host, t_memlist *data);
+char	*resolve_host(const char *host);
 void	help_flag(t_pingdata	*data);
 
 int		checkFlags(char *flags_line, t_pingdata *data)
@@ -54,7 +54,7 @@ int		parseParameter(int argc, char **argv, t_pingdata *data)
 	}
 	if (addressIndex == 0)
 		return parser_set_error(NO_HOST, 0, data);
-	data->targetIP = resolve_host(argv[addressIndex], data->allocatedData);
+	data->targetIP = resolve_host(argv[addressIndex]);
 	if (data->targetIP == NULL)
 		return parser_set_error(UNKNOWN_HOST, 0, data);
 	return SUCCES;

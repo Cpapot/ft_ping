@@ -6,13 +6,13 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/16 15:46:01 by cpapot            #+#    #+#             */
-/*   Updated: 2024/06/17 18:18:39 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/06/17 22:24:54 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "connection.h"
 
-char	*resolve_host(const char *host, t_memlist *data)
+char	*resolve_host(const char *host)
 {
 	struct addrinfo		hints, *res;
 	struct sockaddr_in	*addr;
@@ -26,8 +26,7 @@ char	*resolve_host(const char *host, t_memlist *data)
 		return NULL;
 
 	addr = (struct sockaddr_in *)res->ai_addr;
-	result = stock_malloc(sizeof(char) * strlen(inet_ntoa(addr->sin_addr)), &data);
-	strcpy(result, inet_ntoa(addr->sin_addr));
+	result = inet_ntoa(addr->sin_addr);
 	freeaddrinfo(res);
 	return result;
 }

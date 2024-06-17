@@ -77,7 +77,7 @@ NAME		=	ft_ping
 
 AR			=	ar rc
 
-CFLAGS		=	-Wall -Wextra -Werror -fsanitize=leak
+CFLAGS		=	-Wall -Wextra -Werror
 
 CC			=	cc
 
