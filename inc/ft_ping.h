@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 15:34:29 by cpapot            #+#    #+#             */
-/*   Updated: 2024/06/16 20:21:35 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/06/17 17:16:51 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,12 @@
 
 typedef struct s_pingdata
 {
+	char			*address;
 	char			*targetIP;
 	bool			verbose;
 	int				sequence;
+	int				p_transmitted;
+	int				p_received;
 	t_memlist		*allocatedData;
 	char			error[ERROR_BUFFSIZE];
 } t_pingdata;

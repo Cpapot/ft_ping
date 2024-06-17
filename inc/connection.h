@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/16 15:46:06 by cpapot            #+#    #+#             */
-/*   Updated: 2024/06/16 20:29:08 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/06/17 14:47:53 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,12 @@
 # include <sys/types.h>
 # include <sys/socket.h>
 # include <netinet/ip_icmp.h>
-#include <netinet/ip.h>
+# include <netinet/ip.h>
 # include <netinet/in.h>
 # include <string.h>
+# include <time.h>
+
+#define RECV_TIMEOUT 1
 
 typedef struct s_network_data
 {
@@ -33,6 +36,7 @@ typedef struct s_network_data
 	struct sockaddr_in	r_addr;
 	socklen_t			addr_len;
 	struct icmphdr		*icmp;
+	struct timeval		tv_out;
 }	t_network_data;
 
 t_network_data	*setup_connection(t_pingdata *data);

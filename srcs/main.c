@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 15:34:32 by cpapot            #+#    #+#             */
-/*   Updated: 2024/06/16 20:29:34 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/06/17 14:58:28 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ int main(int argc, char **argv)
 			close(net_data->socket);
 			return 1;
 		}
-		ft_printf("mess %d\n", data.sequence);
 
 
 		if (recvfrom(net_data->socket, net_data->packet, sizeof(net_data->packet), 0, (struct sockaddr *)&(net_data->r_addr), &(net_data->addr_len)) <= 0) {

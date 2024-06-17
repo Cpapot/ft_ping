@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/16 15:46:01 by cpapot            #+#    #+#             */
-/*   Updated: 2024/06/16 20:30:23 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/06/17 15:25:37 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,11 @@ t_network_data	*setup_connection(t_pingdata *data)
 	net_data->addr.sin_family = AF_INET;
 	net_data->addr.sin_addr.s_addr = inet_addr(data->targetIP);
 
+	net_data->tv_out.tv_sec = RECV_TIMEOUT;
+	net_data->tv_out.tv_usec = 0;
+	setsockopt(net_data->socket, SOL_SOCKET, SO_RCVTIMEO, (const char *)&net_data->tv_out, sizeof(net_data->tv_out));
+
 	data->sequence = 0;
 	return net_data;
 }
+

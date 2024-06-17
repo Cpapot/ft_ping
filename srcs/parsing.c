@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 15:56:18 by cpapot            #+#    #+#             */
-/*   Updated: 2024/06/16 17:58:38 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/06/17 14:20:57 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,10 @@ int		parseParameter(int argc, char **argv, t_pingdata *data)
 				return INVALID_FLAG;
 		}
 		else if (addressIndex == 0)
+		{
 			addressIndex = i;
+			data->address = argv[i];
+		}
 	}
 	if (addressIndex == 0)
 		return parser_set_error(NO_HOST, 0, data);

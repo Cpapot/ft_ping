@@ -9,14 +9,17 @@ HEADERS		=	ft_ping.h		\
 				parsing.h		\
 				connection.h	\
 				error.h			\
-				help.h
+				help.h			\
+				timer.h
 
 SRCS		=	main.c			\
 				parsing.c		\
 				parsing_utils.c	\
 				connection.c	\
 				error.c			\
-				help.c
+				help.c			\
+				timer.c			\
+				timer_utils.c
 
 LIBFTSRC	=	libftprintf.a libft.a printffd.a
 
@@ -95,7 +98,7 @@ all : header lib ${NAME}
 
 ${NAME}: $(OBJS) $(LIBFT)
 ifeq ($(MUTE),1)
-	@${CC} ${OBJS} ${LIBFT} -o ${NAME} $(FLAGS)
+	@${CC} ${OBJS} ${LIBFT} -o ${NAME} $(FLAGS) -lm
 	@echo -n "${SUPPR} ${GREEN}	${NAME} : 🆗${DEFAULT}\n"
 else
 	${CC} ${OBJS} ${LIBFT} -o ${NAME} $(FLAGS)
