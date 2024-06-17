@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 15:34:32 by cpapot            #+#    #+#             */
-/*   Updated: 2024/06/17 21:47:31 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/06/17 21:51:17 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,8 @@ void	main_loop(t_pingdata *data, t_network_data *net_data)
 	long double	delay = stop_timer();
 	struct iphdr *ip_hdr = (struct iphdr *)net_data->packet;
 	net_data->icmp = (struct icmphdr *)(net_data->packet + (sizeof(struct iphdr)));
-	printf(PR_DATA, data->targetIP, data->sequence - 1, ip_hdr->ttl, delay);
+	if (data->verbose)
+		printf(PR_DATA, data->targetIP, data->sequence - 1, ip_hdr->ttl, delay);
 	sleep(1);
 }
 
@@ -63,6 +64,7 @@ int main(int argc, char **argv)
 	t_network_data	*net_data;
 	long double		result[4];
 
+	data.verbose		= false;
 	data.allocatedData	= NULL;
 	data.targetIP		= NULL;
 	ft_bzero(data.error, sizeof(data.error));
