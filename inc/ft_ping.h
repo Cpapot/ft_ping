@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 15:34:29 by cpapot            #+#    #+#             */
-/*   Updated: 2024/06/17 21:45:55 by cpapot           ###   ########.fr       */
+/*   Updated: 2024/08/15 18:04:21 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # define ERROR_BUFFSIZE		1024
 # define PR_DATA			"64 bytes from %s: icmp_seq=%d ttl=%d time=%.3Lf ms\n"
 # define PR_PING			"PING %s (%s): 56 data bytes\n"
+# define PR_PING_VERB		"PING %s (%s): 56 data bytes,   id 0x%04x = %u\n"
 # define PR_STAT			"--- %s ft_ping statistics ---\n%d\
  packets transmitted, %d packets received, %d%% packet loss\nround-trip \
  min/avg/max/stddev = %.3Lf/%.3Lf/%.3Lf/%.3Lf ms\n"
