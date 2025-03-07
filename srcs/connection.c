@@ -6,17 +6,17 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/16 15:46:01 by cpapot            #+#    #+#             */
-/*   Updated: 2024/06/17 22:24:54 by cpapot           ###   ########.fr       */
+/*   Updated: 2025/03/07 20:48:34 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "connection.h"
 
-char	*resolve_host(const char *host)
+char *resolve_host(const char *host)
 {
-	struct addrinfo		hints, *res;
-	struct sockaddr_in	*addr;
-	char				*result;
+	struct addrinfo hints, *res;
+	struct sockaddr_in *addr;
+	char *result;
 
 	ft_memset(&hints, 0, sizeof(hints));
 	hints.ai_family = AF_INET;
@@ -47,7 +47,7 @@ unsigned short checksum(void *b, int len)
 	return result;
 }
 
-void	update_data(t_pingdata *data, t_network_data *net_data)
+void update_data(t_pingdata *data, t_network_data *net_data)
 {
 	ft_bzero(&net_data->packet, sizeof(net_data->packet));
 	net_data->icmp = (struct icmphdr *)net_data->packet;
@@ -57,11 +57,15 @@ void	update_data(t_pingdata *data, t_network_data *net_data)
 	net_data->icmp->un.echo.sequence = htons(data->sequence++);
 	net_data->icmp->checksum = 0;
 	net_data->icmp->checksum = checksum(net_data->packet, sizeof(struct icmphdr));
+
+	// TTL minimum pour provoquer une erreur Time Exceeded
+	// int ttl = 1;
+	// setsockopt(net_data->socket, IPPROTO_IP, IP_TTL, &ttl, sizeof(ttl));
 }
 
-t_network_data	*setup_connection(t_pingdata *data)
+t_network_data *setup_connection(t_pingdata *data)
 {
-	t_network_data	*net_data;
+	t_network_data *net_data;
 
 	net_data = stock_malloc(sizeof(t_network_data), &data->allocatedData);
 	if (net_data == NULL)
@@ -86,4 +90,3 @@ t_network_data	*setup_connection(t_pingdata *data)
 	data->p_transmitted = 0;
 	return net_data;
 }
-

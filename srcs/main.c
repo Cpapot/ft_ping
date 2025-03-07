@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 15:34:32 by cpapot            #+#    #+#             */
-/*   Updated: 2024/08/15 18:04:33 by cpapot           ###   ########.fr       */
+/*   Updated: 2025/03/07 20:54:13 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,59 +14,69 @@
 #include "connection.h"
 #include <signal.h>
 
-bool	loop = true;
+bool loop = true;
 
-void	handler(int signal)
+//gerer le cas /ft_ping 192.168.255.255 (addresses qui ne repond pas on est bloqué sur recvfrom)
+//gerer le cas /ft_ping 127.0.0.1 google.com twitch.tv (plusieurs adresses (juste voir pour le print))
+
+void handler(int signal)
 {
 	(void)signal;
 	loop = false;
 }
 
-void	close_ping(t_pingdata *data, t_network_data *net_data, int status)
+void close_ping(t_pingdata *data, t_network_data *net_data, int status)
 {
 	close(net_data->socket);
 	stock_free(&data->allocatedData);
 	exit(status);
 }
 
-void	main_loop(t_pingdata *data, t_network_data *net_data)
+void main_loop(t_pingdata *data, t_network_data *net_data)
 {
-	update_data(data, net_data);
-
 	while (42)
 	{
+		update_data(data, net_data);
 		init_timer();
 
-		if (sendto(net_data->socket, net_data->packet, sizeof(net_data->packet), 0, (struct sockaddr *)&(net_data->addr), sizeof(net_data->addr)) <= 0) {
+		if (sendto(net_data->socket, net_data->packet, sizeof(net_data->packet), 0, (struct sockaddr *)&(net_data->addr), sizeof(net_data->addr)) <= 0)
+		{
 			perror("sendto");
 			close_ping(data, net_data, 1);
 		}
 		data->p_transmitted++;
 
 		if (recvfrom(net_data->socket, net_data->packet, sizeof(net_data->packet), 0, (struct sockaddr *)&(net_data->r_addr), &(net_data->addr_len)) > 0)
-		{
-			data->p_received++;
 			break;
-		}
 	}
 
-	long double	delay = stop_timer();
+	long double delay = stop_timer();
 	struct iphdr *ip_hdr = (struct iphdr *)net_data->packet;
 	net_data->icmp = (struct icmphdr *)(net_data->packet + (sizeof(struct iphdr)));
-	//if (data->verbose)
-		printf(PR_DATA, data->targetIP, data->sequence - 1, ip_hdr->ttl, delay);
+
+	if (net_data->icmp->type == ICMP_ECHOREPLY || net_data->icmp->type == ICMP_ECHO)
+	{
+		data->p_received++;
+		printf(PR_DATA, ntohs(ip_hdr->tot_len) - (ip_hdr->ihl << 2), data->targetIP, data->sequence - 1, ip_hdr->ttl, delay);
+	}
+	else
+	{
+		printf(PR_DATA_ERR, ntohs(ip_hdr->tot_len) - (ip_hdr->ihl << 2), data->targetIP, get_icmp_error_message(net_data->icmp));
+		if (data->verbose && net_data->icmp)
+			ping_printerror_data(net_data->icmp);
+	}
 	sleep(1);
 }
 
 int main(int argc, char **argv)
 {
-	t_pingdata		data;
-	t_network_data	*net_data;
-	long double		result[4];
+	t_pingdata data;
+	t_network_data *net_data;
+	long double result[4];
 
-	data.verbose		= false;
-	data.allocatedData	= NULL;
-	data.targetIP		= NULL;
+	data.verbose = false;
+	data.allocatedData = NULL;
+	data.targetIP = NULL;
 	ft_bzero(data.error, sizeof(data.error));
 
 	if (parseParameter(argc, argv, &data) != 0)
@@ -84,14 +94,16 @@ int main(int argc, char **argv)
 	if (!data.verbose)
 		ft_printf(PR_PING, data.address, data.targetIP);
 	else
-		printf(PR_PING_VERB, data.address, data.targetIP, getpid(), getpid());
+		ft_printf(PR_PING_VERB, data.address, data.targetIP, getpid(), getpid());
 	while (loop)
 		main_loop(&data, net_data);
 
 	get_timer_result(&data, result);
-	printf(PR_STAT, data.address, data.p_transmitted, data.p_received,\
-		(100 - ((100 * data.p_received) / data.p_transmitted)), \
-		result[0], result[2], result[1], result[3]);
+	printf(PR_STAT, data.address, data.p_transmitted, data.p_received,
+		   (100 - ((100 * data.p_received) / data.p_transmitted)));
+
+	if (data.p_received != 0)
+		printf(PR_ROUND_TRIP, result[0], result[2], result[1], result[3]);
 
 	close(net_data->socket);
 	stock_free(&data.allocatedData);
