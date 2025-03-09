@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 15:34:32 by cpapot            #+#    #+#             */
-/*   Updated: 2025/03/09 20:11:38 by cpapot           ###   ########.fr       */
+/*   Updated: 2025/03/09 20:31:52 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,6 @@
 #include <signal.h>
 
 bool loop = true;
-
-// gerer le cas /ft_ping 127.0.0.1 google.com twitch.tv (plusieurs adresses (juste voir pour le print))
 
 void handler(int signal)
 {
