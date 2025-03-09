@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/14 15:34:32 by cpapot            #+#    #+#             */
-/*   Updated: 2025/03/07 20:54:13 by cpapot           ###   ########.fr       */
+/*   Updated: 2025/03/09 20:11:38 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,7 @@
 
 bool loop = true;
 
-//gerer le cas /ft_ping 192.168.255.255 (addresses qui ne repond pas on est bloqué sur recvfrom)
-//gerer le cas /ft_ping 127.0.0.1 google.com twitch.tv (plusieurs adresses (juste voir pour le print))
+// gerer le cas /ft_ping 127.0.0.1 google.com twitch.tv (plusieurs adresses (juste voir pour le print))
 
 void handler(int signal)
 {
@@ -34,20 +33,22 @@ void close_ping(t_pingdata *data, t_network_data *net_data, int status)
 
 void main_loop(t_pingdata *data, t_network_data *net_data)
 {
-	while (42)
+	update_data(data, net_data);
+	init_timer();
+
+	if (sendto(net_data->socket, net_data->packet, sizeof(net_data->packet), 0,
+			   (struct sockaddr *)&(net_data->addr), sizeof(net_data->addr)) <= 0)
 	{
-		update_data(data, net_data);
-		init_timer();
-
-		if (sendto(net_data->socket, net_data->packet, sizeof(net_data->packet), 0, (struct sockaddr *)&(net_data->addr), sizeof(net_data->addr)) <= 0)
-		{
-			perror("sendto");
-			close_ping(data, net_data, 1);
-		}
-		data->p_transmitted++;
-
-		if (recvfrom(net_data->socket, net_data->packet, sizeof(net_data->packet), 0, (struct sockaddr *)&(net_data->r_addr), &(net_data->addr_len)) > 0)
-			break;
+		perror("sendto");
+		close_ping(data, net_data, 1);
+	}
+	data->p_transmitted++;
+	int ret = recvfrom(net_data->socket, net_data->packet, sizeof(net_data->packet), 0,
+					   (struct sockaddr *)&(net_data->r_addr), &(net_data->addr_len));
+	if (ret <= 0)
+	{
+		sleep(1);
+		return;
 	}
 
 	long double delay = stop_timer();
@@ -92,9 +93,10 @@ int main(int argc, char **argv)
 		ping_printerror(false, &data, net_data->socket);
 
 	if (!data.verbose)
-		ft_printf(PR_PING, data.address, data.targetIP);
+		printf(PR_PING, data.address, data.targetIP);
 	else
-		ft_printf(PR_PING_VERB, data.address, data.targetIP, getpid(), getpid());
+		printf(PR_PING_VERB, data.address, data.targetIP, getpid(), getpid());
+
 	while (loop)
 		main_loop(&data, net_data);
 
