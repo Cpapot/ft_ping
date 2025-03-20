@@ -6,12 +6,12 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/16 17:51:04 by cpapot            #+#    #+#             */
-/*   Updated: 2024/06/16 17:57:03 by cpapot           ###   ########.fr       */
+/*   Updated: 2025/03/20 19:09:12 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PARSING_H
-# define PARSING_H
+#ifndef HELP_H
+# define HELP_H
 
 # define HELP_PRINT	"Usage: ping [OPTION...] HOST ...\n\
 Send ICMP ECHO_REQUEST packets to network hosts.\n\
